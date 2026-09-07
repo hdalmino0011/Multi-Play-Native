@@ -86,12 +86,7 @@ Please set the JAVA_HOME variable in your environment to match the
 location of your Java installation."
 fi
 
-# Check if gradle command exists directly in system
-if which gradle >/dev/null 2>&1 && [ ! -f "$CLASSPATH" ]; then
-    exec gradle "$@"
-fi
-
-# Fallback wrapper launcher
+# Ensure Gradle Wrapper JAR is present
 if [ ! -f "$CLASSPATH" ]; then
     mkdir -p "$APP_HOME/gradle/wrapper"
     echo "Downloading Gradle Wrapper JAR..."
@@ -102,5 +97,5 @@ fi
 if [ -f "$CLASSPATH" ]; then
     exec "$JAVACMD" $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS "-Dorg.gradle.appname=$APP_BASE_NAME" -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"
 else
-    exec gradle "$@"
+    die "ERROR: Gradle Wrapper JAR not found at $CLASSPATH"
 fi
