@@ -92,15 +92,13 @@ export const CinematicSplashScreen: React.FC<CinematicSplashScreenProps> = ({
                 : 'opacity-0 scale-98 -translate-y-2'
             }`}
           >
-            {/* Marvel-style Studio Box Frame with Silver Chrome & Sheen */}
-            <div className="marvel-silver-frame px-8 sm:px-14 py-4 sm:py-6 rounded-xl sm:rounded-2xl shadow-2xl mb-5 sm:mb-7 flex items-center justify-center">
-              {/* Metallic Sheen Wave Effect sweeping across the emblem */}
-              <div className="silver-gleam-overlay"></div>
-
-              {/* S.L.Dev Iconic Marvel Silver Title */}
-              <h1 className="marvel-silver-title text-4xl sm:text-6xl md:text-7xl font-black select-none tracking-[0.16em] transform hover:scale-[1.02] transition-transform">
+            {/* Iconic Marvel-Style Silver Font Alone (No Box Frame) */}
+            <div className="relative mb-6 sm:mb-8 flex items-center justify-center overflow-visible">
+              <h1 className="marvel-silver-title text-5xl sm:text-7xl md:text-8xl select-none">
                 S.L.Dev
               </h1>
+              {/* Metallic Sheen Wave Effect sweeping across the font alone */}
+              <div className="silver-gleam-text-overlay"></div>
             </div>
 
             {/* Below it: "with the collaboration of HDDev" */}
