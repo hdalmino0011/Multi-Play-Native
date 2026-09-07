@@ -330,7 +330,6 @@ export default function App() {
         onChangeVolume={handleChangeVolume}
         darkMode={darkMode}
         onToggleDarkMode={handleToggleDarkMode}
-        onReplayIntro={() => setCurrentScreen('cinematic-splash')}
       />
 
       {/* Badges & Sticker Book Modal */}

@@ -157,6 +157,16 @@ class SoundEngine {
   }
 
   // SOUND EFFECTS
+  public playFilmReelTick(freq = 440) {
+    // Very soft, subtle ambient film click
+    this.playTone(freq, 0.02, 0, 'sine', 0.018);
+  }
+
+  public playMarvelClimax() {
+    this.playNoise(0.4, 0, 0.12, 1200);
+    this.playTone(220, 0.5, 0.04, 'sine', 0.12, 440);
+  }
+
   public playTap() {
     this.playTone(540, 0.06, 0, 'sine', 0.08);
   }
@@ -183,6 +193,17 @@ class SoundEngine {
     this.playNoise(0.28, 0, 0.4, 800);
     this.playTone(220, 0.15, 0.05, 'sine', 0.15, 440);
     this.playTone(659.25, 0.2, 0.18, 'sine', 0.12);
+  }
+
+  public playCast() {
+    this.playNoise(0.16, 0, 0.3, 1400);
+    this.playTone(320, 0.12, 0.02, 'sine', 0.12, 720);
+  }
+
+  public playReel() {
+    for (let i = 0; i < 6; i++) {
+      this.playTone(760 + (i % 3) * 140, 0.025, i * 0.06, 'triangle', 0.08);
+    }
   }
 
   public playPop() {

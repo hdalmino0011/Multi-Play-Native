@@ -366,7 +366,16 @@ export const TrophyVector: React.FC<{
 export const FishermanBoatVector: React.FC<{
   className?: string;
   size?: number;
-}> = ({ className = '', size = 120 }) => {
+  showStaticLine?: boolean;
+  rodTension?: 'idle' | 'cast' | 'reel';
+  expression?: 'normal' | 'happy' | 'surprised';
+}> = ({
+  className = '',
+  size = 120,
+  showStaticLine = true,
+  rodTension = 'idle',
+  expression = 'normal',
+}) => {
   return (
     <svg
       width={size}
@@ -382,6 +391,14 @@ export const FishermanBoatVector: React.FC<{
         fill="#92400e"
       />
       <rect x="15" y="66" width="134" height="6" rx="3" fill="#b45309" />
+      
+      {/* Fish Bucket in Boat */}
+      <path d="M34 68 L38 88 L52 88 L56 68 Z" fill="#64748b" />
+      <rect x="32" y="66" width="26" height="4" rx="2" fill="#475569" />
+      <ellipse cx="45" cy="68" rx="10" ry="2" fill="#38bdf8" opacity="0.8" />
+      {/* Little fish tail peeking from bucket */}
+      <path d="M42 66 L44 58 L48 64 Z" fill="#f97316" />
+
       {/* Character */}
       {/* Body */}
       <rect x="68" y="44" width="24" height="26" rx="6" fill="#f59e0b" />
@@ -390,31 +407,79 @@ export const FishermanBoatVector: React.FC<{
       {/* Hat */}
       <path d="M60 26 L100 26 L90 14 L70 14 Z" fill="#0284c7" />
       <ellipse cx="80" cy="26" rx="22" ry="4" fill="#0369a1" />
+      
       {/* Eyes & Smile */}
-      <circle cx="76" cy="30" r="2" fill="#0f172a" />
-      <circle cx="84" cy="30" r="2" fill="#0f172a" />
-      <path d="M77 35 Q80 38 83 35" stroke="#0f172a" strokeWidth="1.5" strokeLinecap="round" />
+      {expression === 'surprised' ? (
+        <>
+          <circle cx="76" cy="29" r="3" fill="#0f172a" />
+          <circle cx="84" cy="29" r="3" fill="#0f172a" />
+          <circle cx="80" cy="36" r="3" fill="#0f172a" />
+        </>
+      ) : expression === 'happy' ? (
+        <>
+          <path d="M74 30 Q76 26 78 30" stroke="#0f172a" strokeWidth="2" strokeLinecap="round" fill="none" />
+          <path d="M82 30 Q84 26 86 30" stroke="#0f172a" strokeWidth="2" strokeLinecap="round" fill="none" />
+          <path d="M76 34 Q80 40 84 34" stroke="#0f172a" strokeWidth="2" strokeLinecap="round" fill="#ef4444" />
+        </>
+      ) : (
+        <>
+          <circle cx="76" cy="30" r="2" fill="#0f172a" />
+          <circle cx="84" cy="30" r="2" fill="#0f172a" />
+          <path d="M77 35 Q80 38 83 35" stroke="#0f172a" strokeWidth="1.5" strokeLinecap="round" />
+        </>
+      )}
+
       {/* Rod */}
-      <path
-        d="M84 48 L148 12"
-        stroke="#78350f"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      {/* Fishing Line */}
-      <path
-        d="M148 12 L148 85 Q145 92 140 92"
-        stroke="#ffffff"
-        strokeWidth="1.5"
-        strokeDasharray="3 2"
-      />
-      {/* Hook */}
-      <path
-        d="M140 92 C136 92 136 98 142 98 C146 98 146 94 146 94"
-        stroke="#475569"
-        strokeWidth="2"
-        fill="none"
-      />
+      {rodTension === 'reel' ? (
+        // Curved bending rod under tension
+        <path
+          d="M84 48 Q125 38 146 22"
+          stroke="#78350f"
+          strokeWidth="4.5"
+          strokeLinecap="round"
+          fill="none"
+        />
+      ) : rodTension === 'cast' ? (
+        // Whipping forward rod
+        <path
+          d="M84 48 Q118 42 150 28"
+          stroke="#78350f"
+          strokeWidth="4"
+          strokeLinecap="round"
+          fill="none"
+        />
+      ) : (
+        // Standard rod
+        <path
+          d="M84 48 L148 12"
+          stroke="#78350f"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+      )}
+
+      {/* Reel on rod handle */}
+      <circle cx="92" cy="45" r="4.5" fill="#475569" />
+      <circle cx="92" cy="45" r="2" fill="#94a3b8" />
+
+      {/* Fishing Line (Static default only) */}
+      {showStaticLine && (
+        <>
+          <path
+            d="M148 12 L148 85 Q145 92 140 92"
+            stroke="#ffffff"
+            strokeWidth="1.5"
+            strokeDasharray="3 2"
+          />
+          {/* Hook */}
+          <path
+            d="M140 92 C136 92 136 98 142 98 C146 98 146 94 146 94"
+            stroke="#475569"
+            strokeWidth="2"
+            fill="none"
+          />
+        </>
+      )}
     </svg>
   );
 };

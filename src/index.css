@@ -157,6 +157,15 @@
   }
 }
 
+@keyframes fishWiggle {
+  0%, 100% {
+    transform: rotate(-14deg) scale(1.05);
+  }
+  50% {
+    transform: rotate(14deg) scale(1.12);
+  }
+}
+
 @keyframes wingFlap {
   0%, 100% {
     transform: scaleX(1) rotate(0deg);
@@ -277,6 +286,10 @@
   animation: fishHookUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
+.animate-wiggle {
+  animation: fishWiggle 0.16s ease-in-out infinite;
+}
+
 .animate-wingFlap {
   animation: wingFlap 0.4s ease-in-out infinite;
 }
@@ -380,6 +393,79 @@
   position: relative;
   display: inline-block;
   animation: marvelCinematicZoom 3.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Marvel-Style Rapid Math Comic Film Strips & Flash Dissolve */
+@keyframes marvelRapidScrollLeft {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes marvelRapidScrollRight {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.marvel-rapid-strip-left {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marvelRapidScrollLeft 6s linear infinite;
+}
+
+.marvel-rapid-strip-right {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marvelRapidScrollRight 6.5s linear infinite;
+}
+
+.marvel-rapid-strip-fast {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marvelRapidScrollLeft 4.8s linear infinite;
+}
+
+.marvel-rapid-strip-ultra {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marvelRapidScrollRight 5.2s linear infinite;
+}
+
+/* Flash dissolve transition when rapid math finishes and S.L.Dev emerges */
+@keyframes marvelFlashDissolve {
+  0% {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  35% {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+  100% {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+}
+
+.marvel-flash-transition {
+  animation: marvelFlashDissolve 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Marvel Halftone Dots Overlay for Comic Texture */
+.comic-halftone-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+  background-size: 8px 8px;
 }
 
 /* Marvel-style cinematic slow camera push-in and shimmer */

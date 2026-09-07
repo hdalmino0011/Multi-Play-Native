@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GameMode, Question } from '../types';
 import { soundManager } from '../utils/audio';
 import { MathVisualizer } from './MathVisualizer';
+import { FishingStage } from './FishingStage';
 import { generateQuestions } from '../utils/math';
 import {
   Volume2,
@@ -104,7 +105,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
     // Trigger Mode-Specific Animations
     if (mode === 'fish') {
-      soundManager.playSplash();
       setFishingTarget(chosen);
     } else if (mode === 'butterfly') {
       soundManager.playButterfly();
@@ -121,28 +121,55 @@ export const GameScreen: React.FC<GameScreenProps> = ({
     }
 
     if (isCorrect) {
-      soundManager.playCorrect();
       setScore((prev) => prev + 1);
       setStreak((prev) => prev + 1);
 
-      try {
-        confetti({
-          particleCount: 40,
-          spread: 60,
-          origin: { y: 0.65 },
-        });
-      } catch {}
+      if (mode === 'fish') {
+        // Fishing mode has dedicated reel-in animation sequence:
+        // cast -> hooked -> reel -> caught in bucket at ~1200ms
+        setTimeout(() => {
+          try {
+            confetti({
+              particleCount: 45,
+              spread: 65,
+              origin: { y: 0.4 },
+            });
+          } catch {}
+          soundManager.playCorrect();
+        }, 1250);
 
-      setTimeout(() => {
-        advanceQuestion(score + 1);
-      }, 1100);
+        setTimeout(() => {
+          advanceQuestion(score + 1);
+        }, 1600);
+      } else {
+        soundManager.playCorrect();
+        try {
+          confetti({
+            particleCount: 40,
+            spread: 60,
+            origin: { y: 0.65 },
+          });
+        } catch {}
+
+        setTimeout(() => {
+          advanceQuestion(score + 1);
+        }, 1100);
+      }
     } else {
-      soundManager.playWrong();
       setStreak(0);
 
-      setTimeout(() => {
-        setShowFeedback(true);
-      }, 900);
+      if (mode === 'fish') {
+        // Allow time for line cast & fish escape animation
+        setTimeout(() => {
+          soundManager.playWrong();
+          setShowFeedback(true);
+        }, 1100);
+      } else {
+        soundManager.playWrong();
+        setTimeout(() => {
+          setShowFeedback(true);
+        }, 900);
+      }
     }
   };
 
@@ -302,82 +329,14 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       <main className="relative z-10 flex-1 w-full max-w-5xl mx-auto my-1 min-h-[220px] rounded-2xl overflow-hidden shadow-md border-2 border-slate-300 dark:border-slate-700 flex flex-col justify-between shrink-0">
         {/* GAME STAGE 1: CATCH A FISH */}
         {mode === 'fish' && (
-          <div className="relative w-full h-full min-h-[220px] bg-gradient-to-b from-sky-300 via-sky-400 to-teal-700 dark:from-slate-950 dark:via-indigo-950 dark:to-cyan-950 overflow-hidden flex flex-col justify-between">
-            {/* Day Sun / Night Moon with Twinkling Stars */}
-            <div className="absolute top-1 right-2 pointer-events-none z-10">
-              <div className="dark:hidden animate-pulse">
-                <SunVector size={36} />
-              </div>
-              <div className="hidden dark:block animate-pulse">
-                <MoonVector size={40} />
-              </div>
-            </div>
-
-            {/* Clouds / Night Clouds */}
-            <div className="absolute top-2 left-4 pointer-events-none opacity-80 dark:opacity-30">
-              <CloudVector size={42} />
-            </div>
-
-            {/* Night Stars on Water Sky */}
-            <div className="hidden dark:block absolute inset-0 pointer-events-none">
-              <div className="absolute top-2 left-1/4 animate-pulse"><StarVector size={12} fill="#fde047" /></div>
-              <div className="absolute top-4 right-1/3 animate-pulse delay-500"><StarVector size={10} fill="#a5f3fc" /></div>
-              <div className="absolute top-6 left-12 animate-ping delay-300"><div className="w-1.5 h-1.5 bg-white rounded-full"></div></div>
-            </div>
-
-            {/* Boat & Fisherman with fishing line */}
-            <div className="absolute top-1 left-2 sm:left-4 z-20">
-              <FishermanBoatVector size={72} />
-            </div>
-
-            {/* Floating Water Waves and Ripples */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-1/2 left-10 w-8 h-8 rounded-full border-2 border-white/30 dark:border-cyan-300/40 animate-ripple"></div>
-              <div className="absolute top-1/3 right-16 w-12 h-12 rounded-full border-2 border-white/20 dark:border-cyan-300/30 animate-ripple delay-500"></div>
-              <div className="absolute bottom-6 left-1/3 w-6 h-6 rounded-full border-2 border-white/30 dark:border-cyan-300/40 animate-ripple delay-300"></div>
-            </div>
-
-            {/* Interactive Fish School */}
-            <div className="relative z-10 grid grid-cols-4 gap-2 mt-auto mb-2 px-2 sm:px-4 w-full max-w-2xl mx-auto">
-              {currentQ.options.map((opt, idx) => {
-                const isAnswer = opt === currentQ.answer;
-                const isChosen = selectedOption === opt;
-                const isCaught = fishingTarget === opt;
-
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => handleSelectAnswer(opt)}
-                    disabled={isLocked}
-                    className={`group relative flex flex-col items-center justify-center p-1 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer ${
-                      isCaught ? 'animate-fishHook' : 'animate-swim'
-                    } ${
-                      isChosen
-                        ? isAnswer
-                          ? 'ring-4 ring-emerald-400 bg-emerald-400/30'
-                          : 'ring-4 ring-rose-400 bg-rose-400/30'
-                        : 'hover:bg-white/20 dark:hover:bg-cyan-900/30'
-                    }`}
-                    style={{ animationDelay: `${idx * 0.45}s` }}
-                  >
-                    <div className="relative">
-                      <FishVector size={54} variant={idx % 4} className="transform group-hover:scale-110 transition-transform" />
-                      <span className="absolute inset-0 flex items-center justify-center text-slate-950 font-black text-base sm:text-lg drop-shadow-[0_1px_2px_rgba(255,255,255,0.95)] pr-1">
-                        {opt}
-                      </span>
-                    </div>
-
-                    {isCaught && (
-                      <div className="absolute -top-8 flex items-center gap-1 text-yellow-300 font-black text-xs animate-bounce">
-                        <Sparkles className="w-4 h-4 fill-current" />
-                        <span>CAUGHT!</span>
-                      </div>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          <FishingStage
+            question={currentQ}
+            selectedOption={selectedOption}
+            fishingTarget={fishingTarget}
+            isLocked={isLocked}
+            onSelectOption={handleSelectAnswer}
+            isLastAnswerCorrect={isLastAnswerCorrect}
+          />
         )}
 
         {/* GAME STAGE 2: BUTTERFLY CATCH */}
