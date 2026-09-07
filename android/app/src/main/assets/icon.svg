@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Vibrant Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="45%" stop-color="#0d9488" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+
+    <!-- Subtle Top-to-Bottom Light Sheen -->
+    <linearGradient id="sheenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3" />
+      <stop offset="35%" stop-color="#ffffff" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- 3D Multiplication Tile Gradient -->
+    <linearGradient id="tileGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9d174d" />
+      <stop offset="100%" stop-color="#701a75" />
+    </linearGradient>
+
+    <!-- Golden Star Gradient -->
+    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fffbeb" />
+      <stop offset="40%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+
+    <!-- Banner Gradient -->
+    <linearGradient id="bannerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+
+    <filter id="tileShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="8" flood-color="#042f2e" flood-opacity="0.45" />
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- App Background (Adaptive Safe Square with Rounded Corners) -->
+  <rect width="512" height="512" rx="124" fill="url(#bgGrad)" />
+  <rect width="512" height="512" rx="124" fill="url(#sheenGrad)" />
+  <rect x="14" y="14" width="484" height="484" rx="112" fill="none" stroke="#ffffff" stroke-width="6" stroke-opacity="0.25" />
+
+  <!-- Center Ambient Radiance -->
+  <circle cx="256" cy="225" r="145" fill="#ffffff" fill-opacity="0.12" />
+
+  <!-- Non-Overlapping Balanced Stars in Corners (Within Android Safe Area) -->
+  <!-- Top Left Star -->
+  <g transform="translate(118, 118)">
+    <polygon points="0,-16 4.5,-5 16,-4.5 7.5,3.5 10,15 0,9 -10,15 -7.5,3.5 -16,-4.5 -4.5,-5" fill="url(#starGrad)" />
+    <circle cx="0" cy="0" r="2" fill="#ffffff" />
+  </g>
+  <!-- Top Right Star -->
+  <g transform="translate(394, 118)">
+    <polygon points="0,-16 4.5,-5 16,-4.5 7.5,3.5 10,15 0,9 -10,15 -7.5,3.5 -16,-4.5 -4.5,-5" fill="url(#starGrad)" />
+    <circle cx="0" cy="0" r="2" fill="#ffffff" />
+  </g>
+  <!-- Mid Left Tiny Star -->
+  <g transform="translate(98, 255)">
+    <polygon points="0,-11 3,-3.5 11,-3 5,2.5 7,10 0,6 -7,10 -5,2.5 -11,-3 -3,-3.5" fill="url(#starGrad)" />
+  </g>
+  <!-- Mid Right Tiny Star -->
+  <g transform="translate(414, 255)">
+    <polygon points="0,-11 3,-3.5 11,-3 5,2.5 7,10 0,6 -7,10 -5,2.5 -11,-3 -3,-3.5" fill="url(#starGrad)" />
+  </g>
+
+  <!-- Central Multiplication 3D Card Tile (Centered in Safe-Zone, No Overlaps) -->
+  <g filter="url(#tileShadow)">
+    <!-- Bottom 3D Depth Extrusion -->
+    <rect x="160" y="128" width="192" height="192" rx="44" fill="#3b0717" />
+    
+    <!-- Main Tile Face -->
+    <rect x="160" y="120" width="192" height="192" rx="44" fill="url(#tileGrad)" stroke="#fbcfe8" stroke-width="5" stroke-opacity="0.9" />
+    
+    <!-- Inner Top Bevel Highlight -->
+    <path d="M 190 125 L 322 125 Q 347 125 347 150" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.4" stroke-linecap="round" />
+
+    <!-- Big Bold Multiplication Symbol '×' (Crisp, Perfectly Centered) -->
+    <g transform="translate(256, 216)">
+      <!-- Symbol Drop Shadow -->
+      <path d="M -48 -48 L 48 48 M 48 -48 L -48 48" stroke="#3b0717" stroke-width="34" stroke-linecap="round" />
+      <!-- Main White-Yellow Symbol -->
+      <path d="M -48 -51 L 48 45 M 48 -51 L -48 45" stroke="#fef08a" stroke-width="30" stroke-linecap="round" />
+      <path d="M -48 -53 L 48 43 M 48 -53 L -48 43" stroke="#ffffff" stroke-width="22" stroke-linecap="round" />
+    </g>
+  </g>
+
+  <!-- Bottom Brand Banner (Placed Perfectly Below Tile With Clean Clearance) -->
+  <g transform="translate(256, 386)">
+    <!-- Banner Shadow -->
+    <rect x="-140" y="-2" width="280" height="54" rx="27" fill="#042f2e" fill-opacity="0.4" />
+    <!-- Banner Body -->
+    <rect x="-140" y="-8" width="280" height="54" rx="27" fill="url(#bannerGrad)" stroke="#ffffff" stroke-width="5" />
+    <!-- Inner Glow/Highlight -->
+    <path d="M -115 -4 L 115 -4" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-opacity="0.6" />
+    <!-- Text -->
+    <text x="0" y="27" font-family="'Fredoka', 'Nunito', system-ui, -apple-system, sans-serif" font-size="25" font-weight="900" text-anchor="middle" fill="#78350f" letter-spacing="2">MULTI PLAY!</text>
+  </g>
+</svg>

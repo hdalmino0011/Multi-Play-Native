@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Multi Play! Times Tables Adventure</title>
+    <meta name="description" content="A colorful, child-friendly times tables and multiplication math adventure featuring interactive mini-games, visual grouping models, fact memorization tables, sticker rewards, and audio." />
+    <meta property="og:title" content="Multi Play! Times Tables Adventure" />
+    <meta property="og:description" content="A colorful, child-friendly times tables and multiplication math adventure featuring interactive mini-games, visual grouping models, fact memorization tables, sticker rewards, and audio." />
+    
+    <!-- PWA Web App Manifest and Theme -->
+    <meta name="theme-color" content="#059669" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <link rel="apple-touch-icon" href="./icon.svg" />
+
+    <!-- Mobile Standalone Web App Meta Tags (iOS & Android) -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-web-app-capable" content="yes" />
+    <meta name="apple-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-web-app-title" content="Multi Play" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Standard PWA Service Worker Registration with Auto-Update -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .catch(() => {
+              // Graceful fallback if hosted without build step
+              return navigator.serviceWorker.register('./public/sw.js');
+            })
+            .then((reg) => {
+              if (reg) {
+                console.log('Multi Play Service Worker active:', reg.scope);
+                reg.update();
+              }
+            })
+            .catch((err) => {
+              console.log('Service Worker registration skipped:', err);
+            });
+        });
+      }
+    </script>
+  </head>
+  <body class="bg-sky-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 antialiased select-none font-sans overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="./src/main.tsx"></script>
+  </body>
+</html>
