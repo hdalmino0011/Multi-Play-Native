@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { GithubVector } from './illustrations/VectorGraphics';
-import { ChevronRight } from 'lucide-react';
 
 interface CinematicSplashScreenProps {
   onComplete: () => void;
@@ -12,16 +11,16 @@ export const CinematicSplashScreen: React.FC<CinematicSplashScreenProps> = ({
   const [stage, setStage] = useState<'sldev' | 'collab'>('sldev');
   const [fadeIn, setFadeIn] = useState<boolean>(true);
 
-  // Stage 1: S.L.Dev + HDDev + powered by github -> at least 3.5 seconds
-  // Stage 2: Cebu Normal University & Cebu Technological University + copyright -> at least 2.5 seconds
+  // Stage 1: S.L.Dev + HDDev + powered by github -> smooth 3.8s cinematic sequence
+  // Stage 2: Cebu Normal University & Cebu Technological University + copyright -> smooth 3.0s sequence
   useEffect(() => {
-    // Stage 1 timer: after smooth entrance animation, hold for 3.8s
+    // Stage 1: hold and let the slow Marvel push-in and chrome sheen run
     const stage1Timer = setTimeout(() => {
-      setFadeIn(false); // trigger soft fade out
+      setFadeIn(false); // soft, smooth fade out
       const transitionTimer = setTimeout(() => {
         setStage('collab');
         setFadeIn(true); // soft fade in stage 2
-      }, 650);
+      }, 700);
 
       return () => clearTimeout(transitionTimer);
     }, 3800);
@@ -31,27 +30,22 @@ export const CinematicSplashScreen: React.FC<CinematicSplashScreenProps> = ({
 
   useEffect(() => {
     if (stage === 'collab') {
-      // Stage 2 timer: hold for 2.8s after entrance animation
+      // Stage 2: hold for 3.0s then gracefully dissolve to the main game
       const stage2Timer = setTimeout(() => {
         setFadeIn(false);
         const finishTimer = setTimeout(() => {
           onComplete();
-        }, 650);
+        }, 700);
         return () => clearTimeout(finishTimer);
-      }, 2800);
+      }, 3000);
 
       return () => clearTimeout(stage2Timer);
     }
   }, [stage, onComplete]);
 
-  const handleSkip = () => {
-    onComplete();
-  };
-
   return (
     <div
-      onClick={handleSkip}
-      className="fixed inset-0 z-[100] w-full h-full min-h-[100dvh] flex flex-col items-center justify-between select-none overflow-hidden cursor-pointer bg-radial from-[#0c1222] via-[#050811] to-[#020408] text-white safe-phone-padding transition-colors duration-700"
+      className="fixed inset-0 z-[100] w-full h-full min-h-[100dvh] flex flex-col items-center justify-between select-none overflow-hidden bg-radial from-[#0c1222] via-[#050811] to-[#020408] text-white safe-phone-padding transition-colors duration-1000"
     >
       {/* Background Cinematic Ambient Lighting */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -62,21 +56,11 @@ export const CinematicSplashScreen: React.FC<CinematicSplashScreenProps> = ({
         <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
       </div>
 
-      {/* Top Bar with Safe-Area & Optional Subtle Skip Indicator */}
-      <header className="w-full max-w-5xl flex items-center justify-between z-20 px-2 py-1 shrink-0 safe-phone-top">
-        <div className="text-[10px] tracking-[0.25em] uppercase font-bold text-slate-400/50">
+      {/* Top Header with Clean Cinematic Studio Presentation label (No Skip Button) */}
+      <header className="w-full max-w-5xl flex items-center justify-center z-20 px-2 py-2 shrink-0 safe-phone-top">
+        <div className="text-[10px] sm:text-[11px] tracking-[0.35em] uppercase font-extrabold text-slate-400/60 drop-shadow-sm">
           STUDIO PRESENTATION
         </div>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleSkip();
-          }}
-          className="text-xs font-semibold tracking-wider text-slate-300/60 hover:text-white px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xs transition-all cursor-pointer border border-white/10 inline-flex items-center gap-1"
-        >
-          <span>Skip</span>
-          <ChevronRight className="w-3.5 h-3.5" />
-        </button>
       </header>
 
       {/* Main Central Cinematic Content */}
